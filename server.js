@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-let merchants = {};  // { merchantId: { paymentMethod } }
-let orders = [];     // [{ id, merchantId, customerId, product, total, status }]
+let merchants = {};
+let orders = [];   
 
 let orderIdCounter = 1;
 
-// Store merchant payment method
+// payment method for merchant storage
 app.post('/merchant/payment-method', (req, res) => {
   const { merchantId, paymentMethod } = req.body;
   if (!merchantId || !paymentMethod) return res.status(400).json({ error: 'Missing data' });
@@ -16,7 +16,7 @@ app.post('/merchant/payment-method', (req, res) => {
   res.json({ message: 'Payment method saved.' });
 });
 
-// Place an order
+// order placement
 app.post('/order', (req, res) => {
   const { merchantId, customerId, product, total } = req.body;
   if (!merchantId || !customerId || !product || !total) {
@@ -34,7 +34,7 @@ app.post('/order', (req, res) => {
 
   orders.push(order);
 
-  // Simulate payment confirmation
+  // payment information
   setTimeout(() => {
     const foundOrder = orders.find(o => o.id === order.id);
     if (foundOrder) {
@@ -46,12 +46,12 @@ app.post('/order', (req, res) => {
   res.json({ message: 'Order placed.', order });
 });
 
-// Get all orders
+// Get orders
 app.get('/orders', (req, res) => {
   res.json(orders);
 });
 
-// Get single order
+// Get a single order
 app.get('/order/:id', (req, res) => {
   const order = orders.find(o => o.id === parseInt(req.params.id));
   if (!order) return res.status(404).json({ error: 'Order not found' });
