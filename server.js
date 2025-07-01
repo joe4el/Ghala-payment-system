@@ -1,4 +1,5 @@
 const express = require('express');
+<<<<<<< HEAD
 const path = require('path');
 const app = express();
 
@@ -23,12 +24,30 @@ app.post('/merchant/payment-method', (req, res) => {
   if (!merchantId || !paymentMethod) {
     return res.status(400).json({ error: 'Missing data' });
   }
+=======
+const app = express();
+app.use(express.json());
+
+let merchants = {};
+let orders = [];   
+
+let orderIdCounter = 1;
+
+// payment method for merchant storage
+app.post('/merchant/payment-method', (req, res) => {
+  const { merchantId, paymentMethod } = req.body;
+  if (!merchantId || !paymentMethod) return res.status(400).json({ error: 'Missing data' });
+>>>>>>> ea2f976491043909332168bb4380ff413ef48f70
 
   merchants[merchantId] = { paymentMethod };
   res.json({ message: 'Payment method saved.' });
 });
 
+<<<<<<< HEAD
 // Place an order
+=======
+// order placement
+>>>>>>> ea2f976491043909332168bb4380ff413ef48f70
 app.post('/order', (req, res) => {
   const { merchantId, customerId, product, total } = req.body;
   if (!merchantId || !customerId || !product || !total) {
@@ -45,14 +64,32 @@ app.post('/order', (req, res) => {
   };
 
   orders.push(order);
+<<<<<<< HEAD
   res.json({ message: 'Order placed', order });
 });
 
 // Get all orders
+=======
+
+  // payment information
+  setTimeout(() => {
+    const foundOrder = orders.find(o => o.id === order.id);
+    if (foundOrder) {
+      foundOrder.status = 'paid';
+      console.log(`Order #${foundOrder.id} marked as PAID.`);
+    }
+  }, 5000); // 5 seconds
+
+  res.json({ message: 'Order placed.', order });
+});
+
+// Get orders
+>>>>>>> ea2f976491043909332168bb4380ff413ef48f70
 app.get('/orders', (req, res) => {
   res.json(orders);
 });
 
+<<<<<<< HEAD
 // Confirm an order by ID
 app.patch('/order/confirm/:orderId', (req, res) => {
   const orderId = parseInt(req.params.orderId);
@@ -72,3 +109,23 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+=======
+// Get a single order
+app.get('/order/:id', (req, res) => {
+  const order = orders.find(o => o.id === parseInt(req.params.id));
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+  res.json(order);
+});
+
+// Simulate payment manually
+app.post('/order/:id/simulate-payment', (req, res) => {
+  const order = orders.find(o => o.id === parseInt(req.params.id));
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+
+  order.status = 'paid';
+  res.json({ message: `Order #${order.id} marked as paid.` });
+});
+
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+>>>>>>> ea2f976491043909332168bb4380ff413ef48f70
