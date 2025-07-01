@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghala Admin UI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Ghala Merchant Admin</h1>
+
+  <section id="merchant-settings">
+    <h2>Merchant Settings</h2>
+    <form id="payment-form">
+      <label>Merchant ID: <input type="text" id="merchantId" required /></label><br/>
+      <label>Label: <input type="text" id="label" required /></label><br/>
+      <label>Provider: <input type="text" id="provider" required /></label><br/>
+      <label>Phone Number: <input type="text" id="phone" required /></label><br/>
+      <label>Currency: <input type="text" id="currency" required /></label><br/>
+      <button type="submit">Save Payment Method</button>
+    </form>
+  </section>
+
+  <section id="orders">
+    <h2>Order List</h2>
+    <button onclick="loadOrders()">Refresh Orders</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th><th>Product</th><th>Total</th><th>Status</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable"></tbody>
+    </table>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
